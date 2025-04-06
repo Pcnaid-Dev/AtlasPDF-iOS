@@ -1,0 +1,55 @@
+
+1. Bundle Identifiers:
+
+File: pdfexpert.xcodeproj/project.pbxproj
+Change: (Xcode Project Settings - Target "PdfExpert" and "ShareFileExtension" -> General Tab -> Bundle Identifier). As described in the previous comprehensive answer, update the bundle identifiers for both targets.
+File: pdfexpert/PdfExpert.entitlements & ShareFileExtension/ShareFileExtension.entitlements
+Change: com.apple.developer.icloud-container-identifiers and com.apple.security.application-groups. Update these array values to reflect your new bundle identifier and app group identifier.
+File: pdfexpert/Applicaction/Constants.swift
+Change: SharedStorage.schema = "pdfpro://" & SharedStorage.schema = "pdfprostaging://": Update these URL schemes to your custom ones.
+File: pdfexpert/InternalUtils/SharedStorage.swift
+Change: private static let appGroup = "group.eu.balzo.pdfexpert": Update the App Group Identifier string.
+File: pdfexpert/Resources/InfoTemplate.plist & pdfexpert/Resources/Staging/Info.plist & pdfexpert/Resources/Production/Info.plist
+Change: CFBundleURLSchemes -> array -> string: Update "pdfpro" to your custom URL scheme.
+2. App Name:
+
+File: README.md
+Change: Main title and throughout the document wherever "PDF Easy" or "PDFEasy-iOS" is mentioned.
+File: pdfexpert/Applicaction/Constants.swift
+Change: K.Misc.AppTitle = "PDF Pro": Change "PDF Pro" to your desired app name.
+File: pdfexpert/Resources/InfoTemplate.plist & pdfexpert/Resources/Staging/Info.plist & pdfexpert/Resources/Production/Info.plist
+Change: FacebookDisplayName: Update "PDF Pro" to your desired app name.
+File: pdfexpert/Resources/Assets.xcassets/AppIconStaging.appiconset/Contents.json
+Change: filename in the "images" array. Update AppIconStaging.png if you renamed your staging app icon file.
+File: pdfexpert/Resources/Assets.xcassets/AppIcon.appiconset/Contents.json
+Change: filename in the "images" array. Update icon.png if you renamed your app icon file.
+File: pdfexpert.xcodeproj/xcshareddata/xcschemes/PdfExpert Staging.xcscheme & pdfexpert.xcodeproj/xcshareddata/xcschemes/PdfExpert.xcscheme & ShareFileExtension/Resources/Staging/Info.plist & ShareFileExtension/Resources/Production/Info.plist
+Change: BuildableName = "PdfExpert.app" & DISPLAY_NAME = "PDF Pro Staging" & INFOPLIST_KEY_CFBundleDisplayName = "$(DISPLAY_NAME)" & INFOPLIST_KEY_CFBundleDisplayName = ShareFileExtension: While not strictly code, these are branding elements in your Xcode project scheme, Info.plist and Build Settings. Update these to your new app name. (Note: some might be placeholders like $(DISPLAY_NAME) which derive from other settings).
+3. Developer/Contact Information (Copyright, Terms, Privacy):
+
+File: pdfexpert/Applicaction/Constants.swift
+Change:
+K.Misc.PrivacyPolicyUrlString = "https://www.balzo.eu/privacy-policy": Update "https://www.balzo.eu/privacy-policy" to your Privacy Policy URL.
+K.Misc.TermsAndConditionsUrlString = "https://balzo.eu/terms-and-conditions/": Update "https://balzo.eu/terms-and-conditions/" to your Terms and Conditions URL.
+Code Comments: While there's no specific "Contact Us" text, you may want to review all files for comments (especially in the headers of files like ci_scripts/ci_post_clone.sh, pdfexpert/Applicaction/AppDelegate.swift, etc.) and replace any developer-specific names or company names ("Leonardo Passeri", "Balzo") with your own information if desired for a completely clean rebrand. This is more for cosmetic purposes and code ownership clarity.
+Copyright Text: The provided codebase doesn't have explicit copyright text within the code itself. Copyright notices are usually added in the app's "About" or "Settings" screen or in legal documentation, which would be part of the UI and URLs you're already updating. If you add an "About" screen later, you can include your copyright notice there.
+4. API Tokens/Keys:
+
+File: pdfexpert/Models/Entities/ProjectInfo.swift & pdfexpert/Resources/ProjectInfo.plist
+Change: static var chatPdfApiKey: String { Self.getValue(forKey: .chatPdfApiKey, defaultValue: "") } & CHAT_PDF_API_KEY: Replace the placeholder value in ProjectInfo.plist for CHAT_PDF_API_KEY with your ChatPDF API key.
+Facebook App ID & Client Token:
+File: pdfexpert/Resources/InfoTemplate.plist & pdfexpert/Resources/Staging/Info.plist & pdfexpert/Resources/Production/Info.plist
+Change: FacebookAppID and FacebookClientToken: Replace placeholder values with your Facebook App ID and Client Token obtained from the Facebook for Developers portal.
+Firebase Configuration:
+File: pdfexpert/Resources/Staging/GoogleService-Info.plist & pdfexpert/Resources/Production/GoogleService-Info.plist: Replace these files entirely with your own GoogleService-Info.plist files downloaded from your Firebase project.
+5. Environmental Variables (CI/CD Script - ci_scripts/ci_post_clone.sh):
+
+File: ci_scripts/ci_post_clone.sh
+Change:
+CUSTOM_GOOGLE_SERVICE_INFO: This variable in the script's echo commands is populated from your CI/CD environment variables. Ensure your CI/CD pipeline is set up to provide the content of your GoogleService-Info.plist file as the value for this variable.
+CUSTOM_PROJECT_INFO: Similarly, CUSTOM_PROJECT_INFO environment variable should provide the content of your ProjectInfo.plist file.
+Note: If you are not using a CI/CD pipeline that relies on environment variables for configuration, you can remove or significantly simplify this script. You would then directly place your GoogleService-Info.plist and ProjectInfo.plist files in the PdfExpert/Resources/Staging and PdfExpert/Resources/Production folders.
+Important Notes:
+
+Xcode Project File (.xcodeproj): Be extremely cautious when directly editing the pdfexpert.xcodeproj/project.pbxproj file in a text editor. Incorrect edits here can easily corrupt your Xcode project. It's generally safer to make changes through the Xcode UI itself (Target settings, Build Settings, etc.). If you rename the project file itself, be sure to do it through Xcode's "Rename" functionality.
+Search Functionality: Use Xcode's "Find and Replace" (Cmd+Shift+F) to search for instances of "PDF Easy", "PDFEasy-iOS", "Balzo", and any other branding or developer-specific names across the entire project to ensure you catch everything.
