@@ -16,6 +16,7 @@ Use code with caution.
 Swift
 AnalyticsEvent.reportNonFatalError case: The reportNonFatalError analytics event in AnalyticsEvent enum is specifically designed to be handled by Crashlytics, as evidenced by the code Crashlytics.crashlytics().record(error: error.nsError).
 Conclusion: YES, Firebase Crashlytics is definitely integrated and used in the app. The code explicitly imports FirebaseCrashlytics and uses Crashlytics.crashlytics().record(error:) to report non-fatal errors through the analytics infrastructure.
+
 2. Branch SDK:
 
 Search Keywords: Branch., branch_key, BranchEvent, BranchUniversalObject
@@ -79,6 +80,8 @@ Swift
 Use code with caution.
 ci_scripts/ci_post_clone.sh: Branch.setUseTestBranchKey(true) in the CI script indicates Branch SDK configuration for staging.
 Conclusion: YES, Branch SDK is definitely integrated and actively used for attribution and deep linking. The code shows clear usage of Branch class methods for session initialization, deep link handling, ATT status, and event tracking using BranchEvent and BranchUniversalObject. The CI script also configures Branch for staging. No explicit SDK key search was successful in the provided files, but it is likely configured either through plist (though not evident in the provided Info.plist snippets) or directly within the Branch SDK setup within AttributionManagerImpl.swift or via environment variables not captured in this code dump.
+
+
 3. Facebook SDK (Ads Attribution - Optional):
 
 Search Keywords: FacebookCore., Settings., AppEvents.
