@@ -1,0 +1,24 @@
+//
+//  Repository.swift
+//  StoryKidsAI
+//
+//  Created by Pcnaid Inc on 27/03/23.
+//
+
+import Foundation
+
+protocol Repository {
+    func savePdf(pdf: Pdf) throws -> Pdf
+    func getDoPdfExist() throws -> Bool
+    func loadPdfs() throws -> [Pdf]
+    func delete(pdf: Pdf) throws
+    
+    func saveSignature(signature: Signature) throws -> Signature
+    func getDoSignatureExist() throws -> Bool
+    func loadSignatures() throws -> [Signature]
+    func delete(signature: Signature) throws
+    func delete(signatures: [Signature]) throws
+    
+    func saveSuggestedFields(suggestedFields: SuggestedFields) throws -> SuggestedFields
+    func loadSuggestedFields() throws -> SuggestedFields?
+}

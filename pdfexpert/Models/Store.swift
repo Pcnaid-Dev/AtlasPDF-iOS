@@ -1,0 +1,27 @@
+//
+//  Store.swift
+//  ChatAI
+//
+//  Created by Pcnaid Inc on 03/03/23.
+//
+
+import Foundation
+import StoreKit
+import Combine
+
+protocol Store {
+    var subscriptions: [Product] { get }
+    var consumables: [Product] { get }
+    var purchasedSubscriptions: [Product] { get }
+    var subscriptionGroupStatus: RenewalState? { get }
+    var isPremium: CurrentValueSubject<Bool, Never> { get }
+    
+    func refreshAll() async throws
+    func requestProducts() async throws
+    func purchase(_ product: Product) async throws -> Transaction?
+    func isPurchased(_ product: Product) async throws -> Bool
+    func checkVerified<T>(_ result: VerificationResult<T>) throws -> T
+    func updateCustomerProductStatus() async
+    func getProductData(forProductId productId: String) -> Any?
+    func sortByPrice(_ products: [Product]) -> [Product]
+}

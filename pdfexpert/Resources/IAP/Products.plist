@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>yearly</key>
+	<dict>
+		<key>name</key>
+		<string>standard_subscription</string>
+		<key>views</key>
+		<array>
+			<string>pairs</string>
+			<string>picker</string>
+		</array>
+	</dict>
+	<key>yearly.freetrial</key>
+	<dict>
+		<key>name</key>
+		<string>standard_subscription</string>
+		<key>views</key>
+		<array>
+			<string>pairs</string>
+			<string>vertical</string>
+			<string>picker</string>
+		</array>
+	</dict>
+	<key>monthly</key>
+	<dict>
+		<key>name</key>
+		<string>standard_subscription</string>
+		<key>views</key>
+		<array>
+			<string>pairs</string>
+			<string>vertical</string>
+		</array>
+	</dict>
+	<key>monthly.freetrial</key>
+	<dict>
+		<key>name</key>
+		<string>standard_subscription</string>
+		<key>views</key>
+		<array>
+			<string>pairs</string>
+		</array>
+	</dict>
+	<key>weekly</key>
+	<dict>
+		<key>name</key>
+		<string>standard_subscription</string>
+		<key>views</key>
+		<array>
+			<string>vertical</string>
+			<string>picker</string>
+		</array>
+	</dict>
+</dict>
+</plist>
