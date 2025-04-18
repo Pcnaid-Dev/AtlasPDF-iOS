@@ -1,6 +1,6 @@
-# PDFEasy-iOS
 
-PDF Easy is an iOS app for iPhone and iPad that allows to convert and manage pdf files. [App Store Link](https://apps.apple.com/us/app/pdf-easy-convert-edit/id1659625843).
+# AtlasPDF
+AtlasPDF is an iOS app for iPhones that allow users to edit and manage their pdf files.
 
 # Main features
 
@@ -29,19 +29,7 @@ PDF Easy is an iOS app for iPhone and iPad that allows to convert and manage pdf
 5. Onboarding with tutorial.
 6. Tutorial to open pdf from outside the app through app extension.
 
-# Setup
-
-This project uses Firebase SDK for analytics and Facebook SDK for attribution of Facebook ads campaigns. Moreover, staging and production environments are separated to avoid analytics data pollution. Follow these instructions to add your own Firebase and Facebook information to the project.
-
-1. Clone this project.
-3. Add folders PdfExpert/Resources/Staging and PdfExpert/Resources/Production.
-4. Inside each folder put your Firebase GoogleService-Info.plist file for the corresponding environment.
-5. Inside each folder put a copy of the InfoTemplate.plist, renamed as Info.plist, for the corresponding environment. Within those files, update the values for the FacebookAppID and FacebookClientToken keys to match the ones on your Facebook App.
- 
-This app uses many features that require additional setup, such as subscriptions, iCloud and app extension. Maybe specific instructions will be added in the future, but for now they are left to the reader.
-
-# Technologies
-
+# Technologies Used
 1. SwiftUI
 2. StoreKit 2
 3. Core Data
