@@ -40,12 +40,12 @@ struct ChatPdfView: View {
                             }
                         }
                         .onChange(of: self.viewModel.messages.count){ _ in
-                            if self.isScrollToAvailable {
-                                withAnimation{
-                                    reader.scrollTo(self.bottomID)
+                                if self.isScrollToAvailable {
+                                    withAnimation{
+                                        reader.scrollTo(self.bottomID)
+                                    }
                                 }
                             }
-                        }
                     }
                 } else {
                     VStack{

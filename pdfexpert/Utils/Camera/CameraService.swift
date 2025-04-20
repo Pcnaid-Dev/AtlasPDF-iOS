@@ -48,34 +48,34 @@ extension Photo {
 public class CameraService {
     typealias PhotoCaptureSessionID = String
     
-//    MARK: Observed Properties UI must react to
+    //    MARK: Observed Properties UI must react to
     
-//    1.
+    //    1.
     @Published public var flashMode: AVCaptureDevice.FlashMode = .off
-//    2.
+    //    2.
     @Published public var error: CameraError? = nil
-//    3.
+    //    3.
     @Published public var shouldShowSpinner = false
-//    4.
+    //    4.
     @Published public var willCapturePhoto = false
-//    5.
+    //    5.
     @Published public var isCameraButtonDisabled = true
-//    6.
+    //    6.
     @Published public var isCameraUnavailable = true
-//    8.
+    //    8.
     @Published public var photo: Photo?
     
-// MARK: Session Management Properties
+    // MARK: Session Management Properties
     
-//    9
+    //    9
     public let session = AVCaptureSession()
-//    10
+    //    10
     var isSessionRunning = false
-//    12
+    //    12
     var isConfigured = false
-//    13
+    //    13
     var setupResult: SessionSetupResult = .success
-//    14
+    //    14
     // Communicate with the session and other session objects on this queue.
     private let sessionQueue = DispatchQueue(label: "session queue")
     
@@ -113,7 +113,7 @@ public class CameraService {
     
     //        MARK: Checks for user's permisions
     public func checkForPermissions() {
-      
+        
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
             // The user has previously granted access to the camera.
@@ -214,7 +214,7 @@ public class CameraService {
         
         self.start()
     }
- 
+    
     //  MARK: Device Configuration
     
     /// - Tag: ChangeCamera
@@ -291,15 +291,15 @@ public class CameraService {
             }
             
             DispatchQueue.main.async {
-//                MARK: Here enable capture button due to successfull setup
+                //                MARK: Here enable capture button due to successfull setup
                 self.isCameraButtonDisabled = false
             }
         }
     }
     
     public func focus(at focusPoint: CGPoint){
-//        let focusPoint = self.videoPreviewLayer.captureDevicePointConverted(fromLayerPoint: point)
-
+        //        let focusPoint = self.videoPreviewLayer.captureDevicePointConverted(fromLayerPoint: point)
+        
         let device = self.videoDeviceInput.device
         do {
             try device.lockForConfiguration()
@@ -340,7 +340,7 @@ public class CameraService {
     /// - Tag: Start capture session
     
     public func start() {
-//        We use our capture session queue to ensure our UI runs smoothly on the main thread.
+        //        We use our capture session queue to ensure our UI runs smoothly on the main thread.
         sessionQueue.async {
             if !self.isSessionRunning && self.isConfigured {
                 switch self.setupResult {
@@ -358,21 +358,21 @@ public class CameraService {
                 case .configurationFailed:
                     
                     print("Camera unavailable on this device")
-
+                    
                     DispatchQueue.main.async {
                         self.error = .cameraUnavailable
                         self.isCameraButtonDisabled = true
                         self.isCameraUnavailable = true
                     }
-            case .notAuthorized:
-                print("Application not authorized to use camera")
-
-                DispatchQueue.main.async {
-                    self.error = .permissionDenied
-                    self.isCameraButtonDisabled = true
-                    self.isCameraUnavailable = true
+                case .notAuthorized:
+                    print("Application not authorized to use camera")
+                    
+                    DispatchQueue.main.async {
+                        self.error = .permissionDenied
+                        self.isCameraButtonDisabled = true
+                        self.isCameraUnavailable = true
+                    }
                 }
-            }
             }
         }
     }
@@ -391,115 +391,85 @@ public class CameraService {
         }
     }
     
-    //    MARK: Capture Photo
-    
-    /// - Tag: CapturePhoto
+    // MARK: Capture Photo
     public func capturePhoto(saveToLibrary: Bool) {
-        if self.setupResult == .success {
-            self.isCameraButtonDisabled = true
+        guard setupResult == .success else { return }
+        
+        isCameraButtonDisabled = true          // freeze UI while we shoot
+        
+        sessionQueue.async {
+            // 1.  Lock the orientation on the photo connection
+            if let connection = self.photoOutput.connection(with: .video) {
+                connection.videoOrientation = .portrait
+            }
             
-            sessionQueue.async {
-                if let photoOutputConnection = self.photoOutput.connection(with: .video) {
-                    photoOutputConnection.videoOrientation = .portrait
+            // 2.  Build the AVCapturePhotoSettings
+            var photoSettings = AVCapturePhotoSettings()
+            if self.photoOutput.availablePhotoCodecTypes.contains(.hevc) {
+                photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
+            }
+            
+            if self.videoDeviceInput.device.isFlashAvailable {
+                photoSettings.flashMode = self.flashMode
+            }
+            
+            // ――――  iOS 17 / 16+ high‑resolution pathway  ――――
+            if #available(iOS 17.0, *) {
+                // New API: pick the largest supported dimensions explicitly
+                if let maxDim = self.videoDeviceInput.device
+                    .activeFormat
+                    .supportedMaxPhotoDimensions
+                    .last {
+                    photoSettings.maxPhotoDimensions = maxDim
+                    print("iOS 17+: using \(maxDim.width)×\(maxDim.height)")
                 }
-                var photoSettings = AVCapturePhotoSettings()
-                
-                // Capture HEIF photos when supported. Enable according to user settings and high-resolution photos.
-                if  self.photoOutput.availablePhotoCodecTypes.contains(.hevc) {
-                    photoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
-                }
-                
-                // Sets the flash option for this capture.
-                if self.videoDeviceInput.device.isFlashAvailable {
-                    photoSettings.flashMode = self.flashMode
-                }
-                
-                // ────────────────────────────────────────────────────────────────
-                // iOS 16+ High‑Resolution Photos
-                // ────────────────────────────────────────────────────────────────
-                if #available(iOS 16.0, *) {
-                    // 1) Opt in to the system’s high‑res pipeline:
-                    photoSettings.isHighResolutionPhotoEnabled = true
-
-                    // 2) (Optional) If you want to explicitly pin to the device's largest supported
-                    //    resolution, read it from your AVCaptureDevice:
-                    if let deviceInput = self.videoDeviceInput {
-                        let dims = deviceInput.device.activeFormat.supportedMaxPhotoDimensions
-                        if let maxDim = dims.last {
-                            photoSettings.maxPhotoDimensions = maxDim
-                            print("iOS 16+: maxPhotoDimensions set to \(maxDim.width)x\(maxDim.height)")
-                        } else {
-                            print("Warning: supportedMaxPhotoDimensions was empty.")
-                        }
-                    } else {
-                        print("Warning: videoDeviceInput unavailable, skipping custom maxPhotoDimensions.")
-                    }
-                }
-                // ────────────────────────────────────────────────────────────────
-                    
-                    // --- Using the exact 'if let' structure you provided ---
-                    /* Alternative implementation using your exact snippet:
-                    if let maxDimensions = self.photoOutput?.supportedMaxPhotoDimensions.last { // Use optional chaining for photoOutput
-                         photoSettings.maxPhotoDimensions = maxDimensions
-                         print("iOS 16+: Setting max photo dimensions to \(maxDimensions.width)x\(maxDimensions.height)") // Optional logging
-                    } else {
-                        print("Warning: Could not determine maximum supported photo dimensions for iOS 16+. Using default behavior.")
-                        // Optional fallback here too
-                    }
-                    */
-                     
-                } else {
-                    // Fallback for earlier iOS versions
-                    photoSettings.isHighResolutionPhotoEnabled = true
-                }
-                
-                
-                
-                // Sets the preview thumbnail pixel format
-                if !photoSettings.__availablePreviewPhotoPixelFormatTypes.isEmpty {
-                    photoSettings.previewPhotoFormat = [kCVPixelBufferPixelFormatTypeKey as String: photoSettings.__availablePreviewPhotoPixelFormatTypes.first!]
-                }
-                
-                photoSettings.photoQualityPrioritization = .quality
-                
-                let photoCaptureProcessor = PhotoCaptureProcessor(withSaveToLibrary: saveToLibrary,
-                                                                  requestedPhotoSettings: photoSettings,
-                                                                  willCapturePhotoAnimation: { [weak self] in
-                    // Tells the UI to flash the screen to signal that SwiftCamera took a photo.
+            } else {
+                // Legacy flag (still works pre‑iOS 17)
+                photoSettings.isHighResolutionPhotoEnabled = true
+            }
+            // ――――――――――――――――――――――――――――――――――――――――――――――
+            
+            // 3.  Thumbnail preview format
+            if !photoSettings.__availablePreviewPhotoPixelFormatTypes.isEmpty {
+                photoSettings.previewPhotoFormat = [
+                    kCVPixelBufferPixelFormatTypeKey as String:
+                        photoSettings.__availablePreviewPhotoPixelFormatTypes.first!
+                ]
+            }
+            photoSettings.photoQualityPrioritization = .quality
+            
+            // 4.  Capture‑processor delegate
+            let processor = PhotoCaptureProcessor(
+                withSaveToLibrary: saveToLibrary,
+                requestedPhotoSettings: photoSettings,
+                willCapturePhotoAnimation: { [weak self] in
                     DispatchQueue.main.async {
                         self?.willCapturePhoto = true
                     }
-                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                         self?.willCapturePhoto = false
                     }
-                    
-                }, completionHandler: { [weak self] (photoCaptureProcessor) in
-                    // When the capture is complete, remove a reference to the photo capture delegate so it can be deallocated.
-                    if let data = photoCaptureProcessor.photoData {
+                },
+                completionHandler: { [weak self] processor in
+                    if let data = processor.photoData {
                         self?.photo = Photo(originalData: data)
-                        print("passing photo")
-                    } else {
-                        print("No photo data")
                     }
-                    
                     self?.isCameraButtonDisabled = false
-                    
                     self?.sessionQueue.async {
-                        self?.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = nil
+                        self?.inProgressPhotoCaptureDelegates[processor.requestedPhotoSettings.uniqueID] = nil
                     }
-                }, photoProcessingHandler: { [weak self] animate in
-                    // Animates a spinner while photo is processing
-                    if animate {
-                        self?.shouldShowSpinner = true
-                    } else {
-                        self?.shouldShowSpinner = false
-                    }
-                })
-                
-                // The photo output holds a weak reference to the photo capture delegate and stores it in an array to maintain a strong reference.
-                self.inProgressPhotoCaptureDelegates[photoCaptureProcessor.requestedPhotoSettings.uniqueID] = photoCaptureProcessor
-                self.photoOutput.capturePhoto(with: photoSettings, delegate: photoCaptureProcessor)
-            }
+                },
+                photoProcessingHandler: { [weak self] animate in
+                    self?.shouldShowSpinner = animate
+                }
+            )
+            
+            // 5.  Keep the delegate alive for the duration of the capture
+            self.inProgressPhotoCaptureDelegates[processor.requestedPhotoSettings.uniqueID] = processor
+            
+            // 6.  Fire!
+            self.photoOutput.capturePhoto(with: photoSettings, delegate: processor)
         }
     }
+    
+}   // ← ADD THIS — closes `public class CameraService {`

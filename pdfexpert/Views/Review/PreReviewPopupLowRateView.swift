@@ -63,11 +63,11 @@ struct PreReviewPopupLowRateView: View {
                             .overlay(RoundedRectangle(cornerRadius: 10)
                                 .stroke(ColorPalette.primaryBG, lineWidth: 1))
                             .onChange(of: self.feedbackText) { newValue in
-                                let maxLength = K.Review.FeedbackMaxCharacters
-                                if newValue.count > maxLength  {
-                                    self.feedbackText = String(newValue.prefix(maxLength))
-                                }
-                                self.remainingCharactersText = Self.getRemainigCharactersText(forFeedbackText: self.feedbackText)
+                                    let maxLength = K.Review.FeedbackMaxCharacters
+                                    if newValue.count > maxLength  {
+                                        self.feedbackText = String(newValue.prefix(maxLength))
+                                    }
+                                    self.remainingCharactersText = Self.getRemainigCharactersText(forFeedbackText: self.feedbackText)
                             }
                         if self.feedbackText.isEmpty {
                             VStack {

@@ -257,6 +257,7 @@
 		C9CEF5E32DAF975A00980C8A /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C9CEF5E22DAF975A00980C8A /* Montserrat-Bold.ttf */; };
 		C9CEF5E72DB02DBA00980C8A /* ShareFileExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 895C1BAD2A04FA53005EA190 /* ShareFileExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C9CEF5EC2DB03CCE00980C8A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CEF5EB2DB03CCB00980C8A /* SceneDelegate.swift */; };
+		C9E15B762DB3635100BF4129 /* DispatchQueue+Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E15B752DB3634D00BF4129 /* DispatchQueue+Debounce.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -533,6 +534,7 @@
 		C9CEF5E02DAF975200980C8A /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		C9CEF5E22DAF975A00980C8A /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		C9CEF5EB2DB03CCB00980C8A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		C9E15B752DB3634D00BF4129 /* DispatchQueue+Debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Debounce.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -988,6 +990,7 @@
 		89CD7ACD29D329B1003F1C3A /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				C9E15B752DB3634D00BF4129 /* DispatchQueue+Debounce.swift */,
 				C9CEF5ED2DB0679B00980C8A /* Protocols */,
 				893E849529D5943D00F6B99A /* Camera */,
 				89CD7ACE29D329B1003F1C3A /* UI */,
@@ -1568,6 +1571,7 @@
 				8945D2BC2A03C41000AFF51A /* PdfScanUtility.swift in Sources */,
 				89429F882A9C8EFC00465420 /* PdfSignaturePickerViewModel.swift in Sources */,
 				89CD7B6E29D329B1003F1C3A /* Constants.swift in Sources */,
+				C9E15B762DB3635100BF4129 /* DispatchQueue+Debounce.swift in Sources */,
 				8962D6062A9E28FB008426A2 /* PdfSignaturePrioviderFlow.swift in Sources */,
 				893EB5032AA71FFD0066914E /* BranchAnalyticsPlatform.swift in Sources */,
 				89436ABB29E557D500060605 /* PdfFlowView.swift in Sources */,
@@ -1815,6 +1819,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pcnaid.pdfexpert;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_SWIFT_SYMBOLS = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1947,6 +1952,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pcnaid.pdfexpert;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_SWIFT_SYMBOLS = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2143,6 +2149,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pcnaid.pdfexpert;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_SWIFT_SYMBOLS = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2189,6 +2196,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pcnaid.pdfexpert;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_SWIFT_SYMBOLS = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

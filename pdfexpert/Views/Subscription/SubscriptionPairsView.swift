@@ -26,11 +26,11 @@ struct SubscriptionPairsView: View {
         .onAppear() {
             self.viewModel.onAppear()
         }
-        .onChange(of: self.viewModel.isPremium, perform: { newValue in
-            if newValue {
-                self.onComplete()
-            }
-        })
+        .onChange(of: viewModel.isPremium) { newValue in
+                if newValue {
+                    onComplete()
+                }
+        }
     }
     
     var content: some View {

@@ -64,12 +64,12 @@ struct PdfPageRangeEditorView: View {
                         .listRowBackground(ColorPalette.secondaryBG)
                 }
                 .onChange(of: self.viewModel.pageRangeLowerBounds.count) { newValue in
-                    if self.isScrollToAvailable, newValue > self.previousNumberOfRanges {
-                        withAnimation {
-                            scrollViewProxy.scrollTo(self.bottomID, anchor: .bottom)
+                        if self.isScrollToAvailable, newValue > self.previousNumberOfRanges {
+                            withAnimation {
+                                scrollViewProxy.scrollTo(self.bottomID, anchor: .bottom)
                         }
+                        self.previousNumberOfRanges = newValue
                     }
-                    self.previousNumberOfRanges = newValue
                 }
                 HStack {
                     Spacer()

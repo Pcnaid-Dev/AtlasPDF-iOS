@@ -53,11 +53,11 @@ struct SubscriptionPickerView: View {
                          content: {
             SubscriptionPickerPlanListView(viewModel: self.viewModel)
         })
-        .onChange(of: self.viewModel.isPremium, perform: { newValue in
-            if newValue {
-                self.onComplete()
-            }
-        })
+        .onChange(of: viewModel.isPremium) { newValue in
+                if newValue {
+                    onComplete()
+                }
+        }
     }
     
     @ViewBuilder var content: some View {

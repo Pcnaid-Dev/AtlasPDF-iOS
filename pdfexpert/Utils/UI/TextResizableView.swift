@@ -144,8 +144,8 @@ struct TextResizableView: View {
                                 }
                             }
                             .onChange(of: self.data.text) { _ in
-                                self.updateFilteredSuggestedWords()
-                            }
+                                    self.updateFilteredSuggestedWords()
+                                }
                     }
                     self.getResizeHandle(parentViewSize: parentGeometryReader.size)
                     self.getDeleteButton(parentViewSize: parentGeometryReader.size)
