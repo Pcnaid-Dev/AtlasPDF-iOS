@@ -420,7 +420,7 @@ public class CameraService {
                     .activeFormat
                     .supportedMaxPhotoDimensions
                     .last {
-                    photoSettings.maxPhotoDimensions = maxDim
+                    photoSettings.maxPhotoDimensions = CMVideoDimensions(width: 0, height: 0)
                     print("iOS 17+: using \(maxDim.width)×\(maxDim.height)")
                 }
             } else {
